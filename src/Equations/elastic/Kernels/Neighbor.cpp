@@ -212,6 +212,7 @@ void seissol::kernels::Neighbor::computeBatchedNeighborsIntegral(ConditionalBatc
         neighFluxKrnl.streamPtr = device.api->getNextCircularStream();
         (neighFluxKrnl.*neighFluxKrnl.ExecutePtrs[faceRelation])();
         ++streamCounter;
+        ((cl::sycl::queue *) neighFluxKrnl.streamPtr).wait_and_throw();
       }
     }
 
@@ -239,6 +240,8 @@ void seissol::kernels::Neighbor::computeBatchedNeighborsIntegral(ConditionalBatc
         drKrnl.streamPtr = device.api->getNextCircularStream();
         (drKrnl.*drKrnl.ExecutePtrs[faceRelation])();
         ++streamCounter;
+        ((cl::sycl::queue *) drKrnl.streamPtr).wait_and_throw();
+
       }
     }
     resetDeviceCurrentState(streamCounter);

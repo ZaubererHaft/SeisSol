@@ -265,17 +265,22 @@ void seissol::kernels::Time::computeBatchedAder(double i_timeStepWidth,
     intKrnl.linearAllocator.initialize(tmpMem);
     intKrnl.streamPtr = device.api->getDefaultStream();
     intKrnl.execute0();
+                ((cl::sycl::queue *) intKrnl.streamPtr).wait_and_throw();
 
     for (unsigned Der = 1; Der < CONVERGENCE_ORDER; ++Der) {
       derivativesKrnl.linearAllocator.initialize(tmpMem);
       derivativesKrnl.streamPtr = device.api->getDefaultStream();
       derivativesKrnl.execute(Der);
+        ((cl::sycl::queue *) derivativesKrnl.streamPtr).wait_and_throw();
 
       // update scalar for this derivative
       intKrnl.power *= i_timeStepWidth / real(Der + 1);
       intKrnl.linearAllocator.initialize(tmpMem);
       intKrnl.streamPtr = device.api->getDefaultStream();
+
       intKrnl.execute(Der);
+      ((cl::sycl::queue *) intKrnl.streamPtr).wait_and_throw();
+
     }
     device.api->popStackMemory();
   }
@@ -413,6 +418,8 @@ void seissol::kernels::Time::computeBatchedIntegral(double i_expansionPoint,
     intKrnl.linearAllocator.initialize(tmpMem);
     intKrnl.streamPtr = device.api->getDefaultStream();
     intKrnl.execute(der);
+      ((cl::sycl::queue *) intKrnl.streamPtr).wait_and_throw();
+
   }
   device.api->popStackMemory();
 #else
@@ -478,6 +485,8 @@ void seissol::kernels::Time::computeBatchedTaylorExpansion(real time,
     intKrnl.streamPtr = device.api->getDefaultStream();
     intKrnl.execute(derivative);
     intKrnl.power *= deltaT / static_cast<real>(derivative + 1);
+      ((cl::sycl::queue *) intKrnl.streamPtr).wait_and_throw();
+
   }
 #else
   assert(false && "no implementation provided");

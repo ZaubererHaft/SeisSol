@@ -220,6 +220,8 @@ void seissol::kernels::DynamicRupture::batchedSpaceTimeInterpolation(Conditional
         krnl.Q = const_cast<real const **>((entry.content[*EntityId::DrIdofsPlus])->getPointers());
         krnl.TinvT = const_cast<real const **>((entry.content[*EntityId::DrTinvT])->getPointers());
         krnl.execute(side, 0);
+                        ((cl::sycl::queue *) krnl.streamPtr).wait_and_throw();
+
       }
 
       for (unsigned faceRelation = 0; faceRelation < 4; ++faceRelation) {
@@ -240,6 +242,8 @@ void seissol::kernels::DynamicRupture::batchedSpaceTimeInterpolation(Conditional
           krnl.Q = const_cast<real const **>((entry.content[*EntityId::DrIdofsMinus])->getPointers());
           krnl.TinvT = const_cast<real const **>((entry.content[*EntityId::DrTinvT])->getPointers());
           krnl.execute(side, faceRelation);
+                ((cl::sycl::queue *) krnl.streamPtr).wait_and_throw();
+
         }
       }
     }
