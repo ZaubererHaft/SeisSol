@@ -50,6 +50,7 @@
 
 #ifdef ACL_DEVICE
 #include "device.h"
+#include <CL/sycl.hpp>
 #include "DeviceAux/PlasticityAux.h"
 using namespace device;
 #endif

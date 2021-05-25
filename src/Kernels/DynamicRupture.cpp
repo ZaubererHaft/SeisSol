@@ -53,6 +53,7 @@
 #include <Numerical_aux/Quadrature.h>
 #ifdef ACL_DEVICE
 #include "device.h"
+#include <CL/sycl.hpp>
 #endif
 #include <yateto.h>
 
@@ -220,7 +221,7 @@ void seissol::kernels::DynamicRupture::batchedSpaceTimeInterpolation(Conditional
         krnl.Q = const_cast<real const **>((entry.content[*EntityId::DrIdofsPlus])->getPointers());
         krnl.TinvT = const_cast<real const **>((entry.content[*EntityId::DrTinvT])->getPointers());
         krnl.execute(side, 0);
-                        ((cl::sycl::queue *) krnl.streamPtr).wait_and_throw();
+        ((cl::sycl::queue *) krnl.streamPtr).wait_and_throw();
 
       }
 

@@ -74,6 +74,7 @@
 #include <generated_code/kernel.h>
 #ifdef ACL_DEVICE
 #include <device.h>
+#include <CL/sycl.hpp>
 #endif
 
 namespace seissol {

@@ -93,6 +93,7 @@
 
 #ifdef ACL_DEVICE
 #include <device.h>
+#include <CL/sycl.hpp>
 #include <Solver/Pipeline/DrPipeline.h>
 #endif
 

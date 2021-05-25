@@ -6,6 +6,7 @@
 #include "Condition.hpp"
 #include "EncodedConstants.hpp"
 #include <device.h>
+#include <CL/sycl.hpp>
 #include <string>
 #include <unordered_map>
 #include <utility>

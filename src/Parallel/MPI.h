@@ -56,6 +56,7 @@
 #include <string>
 #include <sstream>
 #include <device.h>
+#include <CL/sycl.hpp>
 #endif  // ACL_DEVICE
 
 #endif // USE_MPI

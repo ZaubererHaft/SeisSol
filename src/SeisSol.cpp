@@ -44,6 +44,7 @@
 
 #ifdef ACL_DEVICE
 #include "device.h"
+#include <CL/sycl.hpp>
 #endif
 
 #ifdef _OPENMP

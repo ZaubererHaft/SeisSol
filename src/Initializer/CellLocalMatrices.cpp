@@ -53,6 +53,7 @@
 #include <utils/logger.h>
 #ifdef ACL_DEVICE
 #include <device.h>
+#include <CL/sycl.hpp>
 #endif
 
 void setStarMatrix( real* i_AT,

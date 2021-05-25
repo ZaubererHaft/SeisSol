@@ -75,6 +75,7 @@
 
 #ifdef ACL_DEVICE
 #include "device.h"
+#include <CL/sycl.hpp>
 #endif
 
 void* seissol::memory::allocate(size_t i_size, size_t i_alignment, enum Memkind i_memkind)
