@@ -214,6 +214,7 @@ void seissol::kernels::DynamicRupture::batchedSpaceTimeInterpolation(Conditional
         krnl.linearAllocator.initialize(tmpMem);
         krnl.streamPtr = device.api->getNextCircularStream();
         krnl.numElements = numElements;
+        device.api->synchDevice();
 
         krnl.QInterpolated = (entry.content[*EntityId::DrQInterpolatedPlus])->getPointers();
         krnl.extraOffset_QInterpolated = timeInterval * tensor::QInterpolated::size();
@@ -234,12 +235,14 @@ void seissol::kernels::DynamicRupture::batchedSpaceTimeInterpolation(Conditional
           krnl.linearAllocator.initialize(tmpMem);
           krnl.streamPtr = device.api->getNextCircularStream();
           krnl.numElements = numElements;
+          device.api->synchDevice();
 
           krnl.QInterpolated = (entry.content[*EntityId::DrQInterpolatedMinus])->getPointers();
           krnl.extraOffset_QInterpolated = timeInterval * tensor::QInterpolated::size();
           krnl.Q = const_cast<real const **>((entry.content[*EntityId::DrIdofsMinus])->getPointers());
           krnl.TinvT = const_cast<real const **>((entry.content[*EntityId::DrTinvT])->getPointers());
           krnl.execute(side, faceRelation);
+          device.api->synchDevice();
         }
       }
     }

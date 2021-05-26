@@ -280,6 +280,7 @@ void seissol::kernels::Local::computeBatchedIntegral(ConditionalBatchTableT &tab
     volKrnl.linearAllocator.initialize(tmpMem);
     volKrnl.streamPtr = device.api->getDefaultStream();
     volKrnl.execute();
+    device.api->synchDevice();
   }
 
   // Local Flux Integral
@@ -295,6 +296,7 @@ void seissol::kernels::Local::computeBatchedIntegral(ConditionalBatchTableT &tab
       localFluxKrnl.linearAllocator.initialize(tmpMem);
       localFluxKrnl.streamPtr = device.api->getDefaultStream();
       localFluxKrnl.execute(face);
+      device.api->synchDevice();
     }
   }
   if (tmpMem != nullptr) {
